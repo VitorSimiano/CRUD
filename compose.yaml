@@ -3,6 +3,8 @@ services:
     build: ./crud-api
     ports:
       - "8000:80"
+    volumes:
+      - ./crud-api/data:/app/data
 
   frontend:
     build: ./crud-frontend-axios
