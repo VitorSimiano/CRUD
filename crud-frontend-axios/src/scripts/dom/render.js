@@ -6,6 +6,15 @@ export function findUserById(id) {
     return usersCache.find((user) => user.id === id);
 }
 
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
 export async function renderUsers(apiUrl) {
     const users = await getUsers(apiUrl);
     usersCache = users;
@@ -21,18 +30,7 @@ export async function renderUsers(apiUrl) {
     users.forEach((user) => {
         const userDiv = document.createElement('div');
         userDiv.classList.add('col-md-3');
-// 1) acrescente esta função no topo do arquivo,
-//    logo depois do findUserById():
-function escapeHtml(value) {
-    return String(value)
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
-}
 
-// 2) passe todo valor do usuário por ela:
 userDiv.innerHTML = `
     <div class="card user-card h-100" id="${escapeHtml(user.id)}">
         <div class="card-body">
