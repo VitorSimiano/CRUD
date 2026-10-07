@@ -72,7 +72,7 @@ usersSection.addEventListener('click', async (event) => {
         try {
             await deleteUser(apiUrl, user.id);
             if (editingId === user.id) exitEditMode();
-            renderUsers(apiUrl);
+           await renderUsers(apiUrl);
         } catch (error) {
             showError(error.message);
         }
@@ -114,11 +114,17 @@ form.addEventListener('submit', async (event) => {
         }
 
         exitEditMode();
-        renderUsers(apiUrl);
+       await renderUsers(apiUrl);
     } catch (error) {
         showError(error.message);
     }
 });
 
 // --- Primeira renderização ---
-document.addEventListener('DOMContentLoaded', () => renderUsers(apiUrl));
+document.addEventListener('DOMContentLoaded', async () => {
+    try {
+        await renderUsers(apiUrl);
+    } catch (error) {
+        showError(error.message);
+    }
+});

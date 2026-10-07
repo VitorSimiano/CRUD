@@ -21,14 +21,24 @@ export async function renderUsers(apiUrl) {
     users.forEach((user) => {
         const userDiv = document.createElement('div');
         userDiv.classList.add('col-md-3');
+// 1) acrescente esta função no topo do arquivo,
+//    logo depois do findUserById():
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
 
-        userDiv.innerHTML = `
-            <div class="card user-card h-100" id="${user.id}">
-                <div class="card-body">
-                    <h5 class="card-title">${user.name}</h5>
-                    <p class="card-text mb-1"><strong>Age:</strong> ${user.age}</p>
-                    <p class="card-text"><strong>Email:</strong> ${user.email}</p>
-                </div>
+// 2) passe todo valor do usuário por ela:
+userDiv.innerHTML = `
+    <div class="card user-card h-100" id="${escapeHtml(user.id)}">
+        <div class="card-body">
+            <h5 class="card-title">${escapeHtml(user.name)}</h5>
+            <p class="card-text mb-1"><strong>Age:</strong> ${escapeHtml(user.age)}</p>
+            <p class="card-text"><strong>Email:</strong> ${escapeHtml(user.email)}</p>
                 <div class="card-footer d-flex gap-2">
                     <button class="btn btn-sm btn-outline-dark flex-fill" data-action="edit">Edit</button>
                     <button class="btn btn-sm btn-outline-danger flex-fill" data-action="delete">Delete</button>
